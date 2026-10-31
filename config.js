@@ -1,6 +1,11 @@
 // Short & Sweet live configuration
-// 1) Deploy the Cloudflare Worker from /cloudflare/worker.js
-// 2) Paste its workers.dev URL below.
-// 3) Optional: paste a hosted payment link from your payment provider.
 window.SHORT_SWEET_API = "";
 window.SHORT_SWEET_PAYMENT_LINK = "";
+
+// Optional brand/operations messages. Leave blank to hide.
+window.SHORT_SWEET_SEASONAL_MESSAGE = "";
+window.SHORT_SWEET_ORDER_CUTOFF_MESSAGE = "";
+
+// Optional Google Analytics 4 Measurement ID, e.g. G-XXXXXXXXXX.
+// Leave blank to disable analytics.
+window.SHORT_SWEET_GA_ID = "";

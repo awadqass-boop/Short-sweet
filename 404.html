@@ -2,12 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fdf1d2">
 <title>Oops — Short & Sweet</title>
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png?v=2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
 <style>
-:root{--brown:#351811;--gold:#d8b35d;--beige:#ead7a1;--cream:#fff2cf}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:Arial,sans-serif;background:linear-gradient(135deg,var(--beige),#f6e7ba);color:var(--brown);padding:24px}.card{width:min(92%,680px);background:var(--cream);border-radius:34px;padding:44px;text-align:center;box-shadow:0 30px 70px #35181120}.cookie{width:160px;margin:auto;filter:drop-shadow(0 18px 20px #35181125)}h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(52px,10vw,90px);line-height:.9;margin:20px 0 12px}p{font-size:18px;line-height:1.6}.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}.btn{display:inline-block;padding:13px 18px;border-radius:999px;background:var(--brown);color:var(--cream);text-decoration:none;font-weight:900}.btn.alt{background:var(--gold);color:var(--brown)}
+body{min-height:100vh;display:grid;place-items:center;padding:24px}
+.card{width:min(100%,640px);background:var(--card);border:1.5px solid var(--gold);border-radius:34px;padding:40px 32px;text-align:center;box-shadow:var(--shadow)}
+.card .logo{height:70px;width:auto;margin:0 auto 10px}
+.card .bowl{width:180px;margin:0 auto 8px;filter:drop-shadow(0 18px 20px rgba(58,33,23,.25))}
+h1{font-size:clamp(40px,8vw,64px);line-height:1;margin:8px 0 12px}
+h1 em{font-style:italic;font-weight:500;color:var(--gold-2)}
+p{font-size:18px;color:var(--brown-2);margin:0}
+.actions{justify-content:center}
 </style>
 </head>
-<body><main class="card"><img class="cookie" src="assets/cookie-flower.png" alt="Short & Sweet chocolate Shortie"><h1>Oops, no Shorties here.</h1><p>The page you’re looking for wandered off. Head back to the shop or track an existing order.</p><div class="actions"><a class="btn" href="index.html">Back to Short & Sweet</a><a class="btn alt" href="track.html">Track Order</a></div></main></body>
+<body>
+<main class="card">
+  <img class="logo" src="assets/logo-brown.svg" alt="Short & Sweet">
+  <img class="bowl" src="assets/products/bowl-mini.webp" alt="">
+  <h1>Oops, no <em>Shorties</em> here.</h1>
+  <p>The page you’re looking for wandered off. Head back home or start an order.</p>
+  <div class="actions"><a class="btn" href="index.html">Back to Short &amp; Sweet</a><a class="btn ghost" href="checkout.html">Start an order</a></div>
+</main>
+</body>
 </html>

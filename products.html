@@ -1,8 +1,93 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Our Treats — Short & Sweet</title><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><style>
-:root{--brown:#351811;--beige:#ead7a1;--cream:#fff2cf;--gold:#d8b35d}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--beige);color:var(--brown)}.wrap{max-width:1080px;margin:auto;padding:38px 24px 80px}.back{font-weight:900}.hero{margin:38px 0}.hero h1{font-family:Georgia,serif;font-size:clamp(50px,8vw,82px);line-height:.9;margin:0 0 14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.card{background:var(--cream);border-radius:30px;padding:28px}.card img{width:220px;height:220px;object-fit:contain;display:block;margin:0 auto 20px}.card h2{font-family:Georgia,serif;font-size:36px;margin:0 0 12px}.sizes{display:grid;gap:10px;margin:20px 0}.size{display:flex;justify-content:space-between;background:white;padding:12px 14px;border-radius:14px}.btn{display:inline-block;background:var(--brown);color:var(--cream);padding:12px 18px;border-radius:999px;text-decoration:none;font-weight:900}.note{line-height:1.6}@media(max-width:760px){.grid{grid-template-columns:1fr}}
-</style></head><body><div class="wrap"><a class="back" href="index.html">← SHORT & SWEET</a><div class="hero"><h1>Our treats.</h1><p class="note">The family favourites behind Short & Sweet.</p></div><div class="grid">
-<article class="card"><img src="assets/cookie-round.png" alt=""><h2>Khaliya</h2><p class="note">A beloved Ramadan classic and family favourite, perfected over more than 15 years.</p><div class="sizes"><div class="size"><span>Mini</span><b>AED 35</b></div><div class="size"><span>Regular</span><b>AED 35</b></div><div class="size"><span>Family</span><b>AED 80</b></div></div><a class="btn" href="checkout.html">Add to order</a></article>
-<article class="card"><img src="assets/cookie-flower.png" alt=""><h2>Salted Caramel Shorties</h2><p class="note">Our twist on traditional Millionaire Shortbread, inspired by a family Eid tradition.</p><div class="sizes"><div class="size"><span>Mini's Jar</span><b>AED 35</b></div><div class="size"><span>Box of 4</span><b>AED 35</b></div><div class="size"><span>Box of 10</span><b>AED 80</b></div></div><a class="btn" href="checkout.html">Add to order</a></article>
-<article class="card"><img src="assets/gift-voucher.jpg" alt=""><h2>Gift vouchers</h2><p class="note">Choose AED 50, AED 100 or AED 150 online. For a custom amount, message us.</p><a class="btn" href="checkout.html#vouchers">Choose a voucher</a></article>
-<article class="card"><img src="assets/cookie-flower.png" alt=""><h2>Custom orders</h2><p class="note">Celebrations, seasonal gifting and customized packaging are available subject to timing and confirmation. Customized packaging requires 7 days’ notice.</p><a class="btn" href="https://wa.me/971567708220?text=Hi%20Short%20%26%20Sweet!%20I%27d%20like%20a%20custom%20order.">Ask us</a></article>
-</div></div></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fdf1d2">
+<meta name="description" content="The Short & Sweet menu: Khaliya, Salted Caramel Shorties, glass stackable bowls of Shortie Pops and gift vouchers, with prices in AED.">
+<title>Menu & Prices — Short & Sweet</title>
+<link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png?v=2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<script src="config.js"></script><script defer src="analytics.js"></script><script defer src="assets/site.js"></script>
+<script defer src="assets/menu.js"></script>
+<style>
+.menu-hero{text-align:center;padding:60px 18px 20px;display:grid;justify-items:center}
+.menu-hero h1{font-size:clamp(48px,7vw,84px);line-height:1;margin:10px 0 8px}
+.menu-hero h1 em{font-style:italic;font-weight:500;color:var(--gold-2)}
+.menu-hero .swirl{margin:6px auto 14px}
+.menu-hero p{margin:0;color:var(--brown-2);font-size:18px}
+.family{background:var(--card);border:1.5px solid var(--gold);border-radius:32px;padding:32px;box-shadow:var(--shadow);margin-bottom:26px}
+.family-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.family-head h2{font-size:clamp(36px,4.6vw,52px);margin:4px 0 0;line-height:1}
+.family-head p{margin:6px 0 0;color:var(--brown-2);max-width:560px}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.item{display:grid;justify-items:center;text-align:center;background:var(--cream);border:1.5px solid var(--line);border-radius:22px;padding:16px 12px 16px;transition:transform .2s var(--ease),border-color .2s,box-shadow .25s}
+.item:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 16px 28px -18px rgba(58,33,23,.55)}
+.item .ph{position:relative;width:100%;aspect-ratio:1.15;margin-bottom:10px}
+.item .ph img{position:absolute;inset:3%;width:94%;height:94%;object-fit:contain;filter:drop-shadow(0 12px 12px rgba(58,33,23,.22))}
+.item .ph.cover img{object-fit:cover;border-radius:16px;filter:none;box-shadow:0 12px 24px -14px rgba(58,33,23,.6)}
+.item b{font:600 21px/1.2 var(--display);font-variation-settings:"SOFT" 100,"WONK" 1}
+.item span{color:var(--muted);font-size:14px}
+.item strong{margin-top:6px;font-size:16px;font-variant-numeric:tabular-nums}
+.bowl-table{width:100%;border-collapse:separate;border-spacing:0;margin:22px 0 18px;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;font-variant-numeric:tabular-nums;background:var(--cream)}
+.bowl-table th,.bowl-table td{padding:12px 16px;text-align:right;border-bottom:1px solid var(--line)}
+.bowl-table tr:last-child td{border-bottom:0}
+.bowl-table th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+.bowl-table th:first-child,.bowl-table td:first-child{text-align:left}
+.bowl-table td:first-child small{display:block;color:var(--muted);font-size:12.5px}
+.bowl-table td{font-weight:600}
+.flavours{display:flex;flex-wrap:wrap;gap:8px}
+.flavour{display:inline-flex;align-items:center;gap:9px;background:var(--cream);border:1.5px solid var(--line);border-radius:999px;padding:8px 14px 8px 9px;font-weight:600;font-size:14px}
+.flavour small{font-weight:400;color:var(--muted)}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(58,33,23,.3)}
+.dots{display:inline-flex}.dots .dot+.dot{margin-left:-5px}
+.notice{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 90px}
+.notice div{background:var(--gold-grad);border-radius:22px;padding:20px 22px}
+.notice b{display:block;font:650 26px/1.1 var(--display);font-variation-settings:"SOFT" 100,"WONK" 1}
+.notice span{color:var(--brown-2)}
+@media(max-width:760px){.family{padding:24px 18px}.items{grid-template-columns:1fr 1fr;gap:10px}.item b{font-size:18px}.notice{grid-template-columns:1fr}.bowl-table th,.bowl-table td{padding:10px 8px;font-size:14px}}
+</style>
+</head>
+<body class="has-mobile-order">
+<nav class="site-nav"><div class="wrap nav">
+  <a class="brand" href="index.html" aria-label="Short & Sweet home"><img src="assets/logo-brown.svg" alt="Short & Sweet Home Baked Treats"></a>
+  <div class="links"><a href="index.html#menu">Menu</a><a href="index.html#bowls">Glass Bowls</a><a href="index.html#how">How to order</a><a href="our-story.html">Our Story</a><a href="index.html#faq">FAQ</a><a class="btn" href="checkout.html">Order now</a></div>
+  <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+</div></nav>
+<div id="mobileMenu" class="mobile-menu"><a href="index.html">Home</a><a href="index.html#menu">Menu</a><a href="our-story.html">Our Story</a><a href="index.html#faq">FAQ</a><a href="checkout.html">Order now</a></div>
+<main class="wrap">
+<header class="menu-hero"><div class="eyebrow">Menu &amp; prices · AED</div><h1>Our <em>treats.</em></h1><img class="swirl" src="assets/swirl.svg" alt=""><p>Perfect to share, or have it all for yourself. Tap anything to add it to your order.</p></header>
+
+<section class="family reveal" style="padding-top:32px"><div class="family-head"><div><div class="eyebrow">Emirati cheese balls</div><h2>Khaliya</h2><p>Soft, comforting cheese balls — part of our family’s Ramadan table for more than 15 years.</p></div><a class="btn" href="checkout.html?add=khaliya">Order Khaliya</a></div>
+<div class="items"><a class="item" href="checkout.html?add=khaliya&amp;v=mini"><span class="ph"><img src="assets/products/khaliya-mini.webp" alt="" loading="lazy"></span><b>Mini</b><strong data-price="khaliya.mini">AED 15</strong></a><a class="item" href="checkout.html?add=khaliya&amp;v=regular"><span class="ph"><img src="assets/products/khaliya-regular.webp" alt="" loading="lazy"></span><b>Regular</b><strong data-price="khaliya.regular">AED 80</strong></a><a class="item" href="checkout.html?add=khaliya&amp;v=family"><span class="ph"><img src="assets/products/khaliya-family.webp" alt="" loading="lazy"></span><b>Family</b><strong data-price="khaliya.family">AED 150</strong></a></div></section>
+
+<section class="family reveal" style="padding-top:32px"><div class="family-head"><div><div class="eyebrow">Salted caramel shortbread cookies</div><h2>Shorties</h2><p>Our take on millionaire shortbread — an Eid tradition passed from mother to daughter, with a salted caramel twist.</p></div><a class="btn" href="checkout.html?add=shorties">Order Shorties</a></div>
+<div class="items"><a class="item" href="checkout.html?add=shorties&amp;v=jar"><span class="ph"><img src="assets/products/shortie-pop-jar.webp" alt="" loading="lazy"></span><b>Shortie Pop Jar</b><span>Pick your flavour</span><strong data-price="shorties.jar">AED 35</strong></a><a class="item" href="checkout.html?add=shorties&amp;v=box4"><span class="ph"><img src="assets/products/shorties-box4.webp" alt="" loading="lazy"></span><b>Box of 4</b><strong data-price="shorties.box4">AED 35</strong></a><a class="item" href="checkout.html?add=shorties&amp;v=box10"><span class="ph"><img src="assets/products/shorties-box10.webp" alt="" loading="lazy"></span><b>Box of 10</b><strong data-price="shorties.box10">AED 80</strong></a></div></section>
+
+<section class="family reveal" id="bowls" style="padding-top:32px"><div class="family-head"><div><div class="eyebrow">Glass stackable bowls</div><h2>Shortie Pop Bowls</h2><p>Choose your size. Pick your flavour. Order a single bowl, or a stacked set of two or three.</p></div><a class="btn" href="checkout.html?add=bowl">Build your bowl</a></div>
+<div class="items"><a class="item" href="checkout.html?add=bowl&amp;size=large"><span class="ph"><img src="assets/products/bowl-large.webp" alt="" loading="lazy"></span><b>Large</b><span>100 pops</span><strong data-price="bowl.large.1">AED 265</strong></a><a class="item" href="checkout.html?add=bowl&amp;size=medium"><span class="ph"><img src="assets/products/bowl-medium.webp" alt="" loading="lazy"></span><b>Medium</b><span>60 pops</span><strong data-price="bowl.medium.1">AED 190</strong></a><a class="item" href="checkout.html?add=bowl&amp;size=small"><span class="ph"><img src="assets/products/bowl-small.webp" alt="" loading="lazy"></span><b>Small</b><span>25 pops</span><strong data-price="bowl.small.1">AED 150</strong></a><a class="item" href="checkout.html?add=bowl&amp;size=mini"><span class="ph"><img src="assets/products/bowl-mini.webp" alt="" loading="lazy"></span><b>Mini</b><span>6 pops</span><strong data-price="bowl.mini.1">AED 60</strong></a></div>
+<table class="bowl-table"><thead><tr><th>Size</th><th>Single</th><th>Set of 2</th><th>Set of 3</th></tr></thead><tbody>
+<tr><td>Large<small>100 pops</small></td><td data-price="bowl.large.1">AED 265</td><td data-price="bowl.large.2">AED 500</td><td data-price="bowl.large.3">AED 710</td></tr><tr><td>Medium<small>60 pops</small></td><td data-price="bowl.medium.1">AED 190</td><td data-price="bowl.medium.2">AED 360</td><td data-price="bowl.medium.3">AED 500</td></tr><tr><td>Small<small>25 pops</small></td><td data-price="bowl.small.1">AED 150</td><td data-price="bowl.small.2">AED 300</td><td data-price="bowl.small.3">AED 400</td></tr><tr><td>Mini<small>6 pops</small></td><td data-price="bowl.mini.1">AED 60</td><td data-price="bowl.mini.2">AED 120</td><td data-price="bowl.mini.3">AED 160</td></tr></tbody></table>
+<div class="flavours"><span class="flavour"><span class="dots"><i class="dot" style="--c:#4a2a1d"></i><i class="dot" style="--c:#f6ecd9"></i></span>Coconut Cream <small>dark, white or mixed chocolate</small></span><span class="flavour"><i class="dot" style="--c:#9db06a"></i>Salted Pistachio</span><span class="flavour"><i class="dot" style="--c:#c4823a"></i>Salted Caramel</span></div></section>
+
+<section class="family reveal" style="padding-top:32px"><div class="family-head"><div><div class="eyebrow">Give something sweet</div><h2>Gift vouchers &amp; custom orders</h2><p>Vouchers for birthdays, thank-yous and cravings — or tell us about a celebration, seasonal gifting or customised packaging.</p></div></div>
+<div class="items"><a class="item" href="checkout.html?add=voucher&amp;v=50"><span class="ph cover"><img src="assets/gift-voucher.jpg" alt="" loading="lazy"></span><b>Gift voucher</b><strong data-price="voucher.50">AED 50</strong></a><a class="item" href="checkout.html?add=voucher&amp;v=100"><span class="ph cover"><img src="assets/gift-voucher.jpg" alt="" loading="lazy"></span><b>Gift voucher</b><strong data-price="voucher.100">AED 100</strong></a><a class="item" href="checkout.html?add=voucher&amp;v=150"><span class="ph cover"><img src="assets/gift-voucher.jpg" alt="" loading="lazy"></span><b>Gift voucher</b><strong data-price="voucher.150">AED 150</strong></a><a class="item" href="checkout.html?add=custom"><span class="ph" style="display:grid;place-items:center"><img src="assets/logo-brown.svg" alt="" style="position:static;width:60%;height:auto;filter:none"></span><b>Something else</b><span>Custom order or packaging</span><strong>We’ll quote you</strong></a></div></section>
+
+<div class="notice reveal"><div><b>10 – 20 pieces</b><span>48 hours’ notice</span></div><div><b>Above 20 pieces</b><span>5 days’ notice</span></div><div><b>Customised</b><span>7 days’ notice</span></div></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+  <div class="footer-grid">
+    <div><img class="logo" src="assets/logo.svg" alt="Short & Sweet Home Baked Treats"><p>Sweet traditions. Homemade happiness.<br>Handcrafted with love in Abu Dhabi.</p></div>
+    <div class="footer-links"><strong>Explore</strong><a href="index.html#menu">Menu</a><a href="index.html#bowls">Glass Bowls</a><a href="our-story.html">Our Story</a><a href="products.html">Full menu &amp; prices</a><a href="checkout.html">Order now</a></div>
+    <div class="footer-links"><strong>Help</strong><a href="index.html#faq">FAQ</a><a href="delivery.html">Delivery &amp; pickup</a><a href="refunds.html">Refunds &amp; cancellations</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></div>
+    <div class="footer-links"><strong>Connect</strong><a href="https://wa.me/971567708220" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/shortnsweet.ae/" target="_blank" rel="noopener">Instagram</a><a href="mailto:shortandsweet.ae@gmail.com">Email</a></div>
+  </div>
+  <div class="footer-bottom"><span>© <span data-year>2026</span> Short &amp; Sweet Home Baked Treats.</span><span>Made with love in Abu Dhabi</span></div>
+</div></footer>
+<a class="wa-float" aria-label="Chat on WhatsApp" href="https://wa.me/971567708220?text=Hi%20Short%20%26%20Sweet!" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.6 7.1L4 20l1.4-4.2A8 8 0 1 1 20 11.5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg></a>
+<a class="mobile-order" href="checkout.html">Start your order</a>
+</body>
+</html>

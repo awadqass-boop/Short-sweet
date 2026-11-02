@@ -10,7 +10,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
-<script src="config.js"></script><script defer src="analytics.js"></script><script defer src="assets/site.js"></script>
+<script src="config.js"></script><script defer src="analytics.js"></script><script defer src="assets/site.js"></script><script defer>
+document.addEventListener("DOMContentLoaded",()=>{const z=window.SHORT_SWEET_DELIVERY_ZONES||[],el=document.getElementById("deliveryZones");if(z.length&&el){el.innerHTML="<h2>Delivery areas & fees</h2><ul>"+z.map(x=>"<li>"+String(x.name||"")+" — AED "+Number(x.fee||0)+"</li>").join("")+"</ul>"}})
+</script>
 </head>
 <body class="has-mobile-order">
 <nav class="site-nav"><div class="wrap nav">
@@ -21,7 +23,7 @@
 <div id="mobileMenu" class="mobile-menu"><a href="index.html">Home</a><a href="index.html#menu">Menu</a><a href="our-story.html">Our Story</a><a href="index.html#faq">FAQ</a><a href="checkout.html">Order now</a></div>
 <main class="wrap" style="max-width:900px">
 <header class="page-hero"><div class="eyebrow">Ordering & delivery</div><h1>Delivery & Pickup</h1><img class="swirl" src="assets/swirl.svg" alt=""></header>
-<article class="page-card"><p>Short & Sweet offers delivery and pickup. Customers choose their preferred method on the order page.</p><h2>Delivery details</h2><p>Delivery location, timing, availability and any applicable delivery fee are confirmed with the order. A preferred delivery time is not guaranteed until confirmed.</p><h2>Pickup</h2><p>Pickup is in Mohammed Bin Zayed City, Abu Dhabi. The exact location and pickup timing are shared when the order is confirmed.</p><h2>Lead times</h2><p>All orders are pre-orders. Orders of 10–20 pieces need 48 hours’ notice, orders above 20 pieces need 5 days’ notice, and customised orders need 7 days’ notice.</p><h2>Order updates</h2><p>Every order is confirmed with you on WhatsApp, and we keep you updated there until your treats are delivered or ready for pickup.</p><div class="contact" style="margin-top:28px;padding-top:20px;border-top:1px dashed var(--line)"><b>Questions?</b><p>WhatsApp: <a href="https://wa.me/971567708220">+971 56 770 8220</a><br>Email: <a href="mailto:shortandsweet.ae@gmail.com">shortandsweet.ae@gmail.com</a></p></div></article>
+<article class="page-card"><p>Short & Sweet offers delivery and pickup. Customers choose their preferred method on the order page.</p><h2>Delivery details</h2><p>Delivery location, timing, availability and any applicable delivery fee are confirmed with the order. A preferred delivery time is not guaranteed until confirmed.</p><div id="deliveryZones"></div><h2>Pickup</h2><p>Pickup is in Mohammed Bin Zayed City, Abu Dhabi. The exact location and pickup timing are shared when the order is confirmed.</p><h2>Lead times</h2><p>All orders are pre-orders. Orders of 10–20 pieces need 48 hours’ notice, orders above 20 pieces need 5 days’ notice, and customised orders need 7 days’ notice.</p><h2>Order updates</h2><p>Every order is confirmed with you on WhatsApp, and we keep you updated there until your treats are delivered or ready for pickup.</p><div class="contact" style="margin-top:28px;padding-top:20px;border-top:1px dashed var(--line)"><b>Questions?</b><p>WhatsApp: <a href="https://wa.me/971567708220">+971 56 770 8220</a><br>Email: <a href="mailto:shortandsweet.ae@gmail.com">shortandsweet.ae@gmail.com</a></p></div></article>
 </main>
 <footer class="site-footer"><div class="wrap">
   <div class="footer-grid">

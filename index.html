@@ -447,6 +447,9 @@
   const reviews=window.SHORT_SWEET_REVIEWS||[],section=document.getElementById("reviews"),grid=document.getElementById("reviewGrid");
   if(reviews.length&&section&&grid){grid.innerHTML=reviews.map(r=>'<div class="custom-card"><h3>'+String(r.name||"Customer").replace(/[&<>"]/g,"")+'</h3><p>“'+String(r.text||"").replace(/[&<>"]/g,"")+'”'+(r.source?'<br><small>'+String(r.source).replace(/[&<>"]/g,"")+'</small>':'')+'</p></div>').join("");section.hidden=false}
   const tik=window.SHORT_SWEET_TIKTOK||"";if(tik){const connect=[...document.querySelectorAll(".footer-links strong")].find(x=>x.textContent.trim()==="Connect")?.parentElement;if(connect){const a=document.createElement("a");a.href=tik;a.target="_blank";a.rel="noopener";a.textContent="TikTok";connect.appendChild(a)}}
+  const badges=window.SHORT_SWEET_PRODUCT_BADGES||{};
+  const selectors={khaliya:'a[href*="add=khaliya"]',shorties:'a[href*="add=shorties"]',bowl:'a[href*="add=bowl"]',voucher:'a[href*="add=voucher"]'};
+  Object.entries(badges).forEach(([k,label])=>{if(!label||!selectors[k])return;document.querySelectorAll(selectors[k]).forEach(el=>{if(el.querySelector(".ss-badge"))return;const b=document.createElement("span");b.className="ss-badge";b.textContent=label;b.style.cssText="display:inline-block;background:var(--gold);color:var(--brown);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800;margin-bottom:6px";el.prepend(b)})});
 })();
 </script>
 </body>

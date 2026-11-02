@@ -303,7 +303,7 @@ textarea.input{height:auto;min-height:84px;padding:12px 14px;resize:vertical;lin
       </div>
       <div class="sum-total"><span>Total<small id="sumNote">before delivery</small></span><strong id="sumTotal">AED 0</strong></div>
       <button class="btn" id="btnReview" data-ss-event="order_review"><svg class="ic"><use href="#i-check"/></svg>Review &amp; send order</button>
-      <p class="fine">No payment is taken on this site. We confirm your order, delivery and payment with you on WhatsApp.</p>
+      <p class="fine">We confirm your order details, delivery and final total with you on WhatsApp.</p>
     </section>
     <div class="help-card"><svg class="ic"><use href="#i-chat"/></svg><span>Planning something special? <a href="https://wa.me/971567708220?text=Hi%20Short%20%26%20Sweet!%20I%27d%20like%20to%20discuss%20a%20custom%20order." target="_blank" rel="noopener">Message us on WhatsApp</a></span></div>
   </aside>
@@ -867,7 +867,7 @@ function review() {
       <div class="rv-total"><span>Subtotal${o.method === 'delivery' ? ' <small style="font-weight:500;color:var(--muted)">+ delivery</small>' : ''}</span><strong>${esc(aed(o.subtotal))}</strong></div>
     </div>
     <div class="rv-section"><h3 class="display">${o.method === 'delivery' ? 'Delivery' : 'Pickup'}</h3><div class="rv-rows">${rows}</div></div>
-    <p class="fine">Tapping send opens WhatsApp with your order written out — just press send there. We’ll reply to confirm the total${o.method === 'delivery' ? ', delivery fee' : ''} and payment.</p>`;
+    <p class="fine">Tapping send opens WhatsApp with your order written out — just press send there. We’ll reply to confirm the final total${o.method === 'delivery' ? ' and delivery fee' : ''}.</p>`;
   $('#rvFoot').innerHTML = `<button class="btn ghost" data-close>${icon('edit')}Edit</button><button class="btn" id="btnSend" data-ss-event="order_whatsapp">${icon('chat')}Send on WhatsApp</button>`;
   $('#btnSend').addEventListener('click', async () => {
     const btn = $('#btnSend'); if (btn.disabled) return;

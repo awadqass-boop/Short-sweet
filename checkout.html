@@ -441,6 +441,27 @@ function newLine(kind, opt = {}) {
   const size = PROD.bowl.sizes.some(s => s.id === opt.size) ? opt.size : 'large';
   return {id: uid(), kind: p.id, variant, size, pack: 1, flavours: [], qty: 1, desc: '', note: ''};
 }
+function lineFromSavedItem(it) {
+  const sku=String(it.sku||"");
+  let l;
+  if(sku==="custom"){l=newLine("custom");l.desc=it.description||it.product||"Custom request";}
+  else if(sku.startsWith("khaliya_")) l=newLine("khaliya",{v:sku.slice(8)});
+  else if(sku.startsWith("shorties_")) l=newLine("shorties",{v:sku.slice(9)});
+  else if(sku.startsWith("voucher_")) l=newLine("voucher",{v:sku.slice(8)});
+  else if(sku.startsWith("bowl_")){const m=/^bowl_(large|medium|small|mini)_([123])$/.exec(sku);l=newLine("bowl",{size:m?m[1]:"large"});if(m)l.pack=+m[2];}
+  if(!l)return null;
+  l.qty=Math.max(1,Number(it.qty)||1);l.flavours=(it.flavourIds||[]).slice();l.note=it.note||"";
+  return l;
+}
+function repeatLastOrder() {
+  const last=store.get('ss.lastOrder.v1',null);
+  if(!last||!Array.isArray(last.items)||!last.items.length){toast("No previous order saved on this device.");return}
+  const lines=last.items.map(lineFromSavedItem).filter(Boolean);
+  if(!lines.length){toast("We couldn’t rebuild that previous order.");return}
+  order=newOrder({name:last.name,phone:last.phone,email:last.email,address:last.address});
+  order.lines=lines;order.method=last.method||"delivery";order.gift=!!last.gift;order.giftTo=last.giftTo||"";order.giftPhone=last.giftPhone||"";order.giftMsg=last.giftMessage||"";
+  openLineId=lines[0].id;store.set(KEY,order);renderLines();fillBinds();syncMethod();refresh();closeSheet();window.scrollTo({top:0,behavior:reduced?"auto":"smooth"});
+}
 let order = store.get(KEY, null);
 if (!order || !Array.isArray(order.lines)) order = newOrder();
 order.lines = order.lines.filter(l => PROD[l.kind]);
@@ -881,7 +902,8 @@ function sent(o, text, orderNumber = '') {
       <p>WhatsApp should now be open with your order — press send there if you haven’t yet. We’ll reply to confirm everything before we bake.</p>
       ${orderNumber ? `<p><b>Order #${esc(orderNumber)}</b> · <a class="text-link" href="track.html?order=${encodeURIComponent(orderNumber)}&phone=${encodeURIComponent(o.phone)}">Track order</a></p>` : ''}
       <p style="margin-top:14px"><a class="text-link" href="${esc(waLink(text))}" target="_blank" rel="noopener">Open WhatsApp again</a> · <a class="text-link" href="#" id="copyOrder">Copy order text</a></p></div>`;
-    $('#rvFoot').innerHTML = `<a class="btn ghost" href="index.html">Back to home</a><button class="btn" data-close>Start a new order</button>`;
+    $('#rvFoot').innerHTML = `<a class="btn ghost" href="index.html">Back to home</a><button class="btn ghost" id="repeatOrder">Order this again</button><button class="btn" data-close>Start a new order</button>`;
+    $('#repeatOrder').addEventListener('click', repeatLastOrder);
     $('#copyOrder').addEventListener('click', e => { e.preventDefault(); (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast('Order copied'), () => toast('Couldn’t copy — please use WhatsApp')); });
     order = newOrder(keep); openLineId = null;
     store.set(KEY, order); loadAvailability(); renderLines(); fillBinds(); syncMethod(); refresh();
@@ -893,6 +915,7 @@ $('#barReview').addEventListener('click', review);
 /* ---------- start ---------- */
 (function fromLink() {
   const q = new URLSearchParams(location.search);
+  if(q.get('repeat')==='1'){setTimeout(repeatLastOrder,0);history.replaceState(null,'',location.pathname);return}
   const kind = q.get('add');
   if (kind && PROD[kind]) {
     const l = newLine(kind, {v: q.get('v'), size: q.get('size')});

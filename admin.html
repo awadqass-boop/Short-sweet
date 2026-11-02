@@ -79,8 +79,8 @@ function renderProduction(os){
   root.innerHTML=counts.size?[...counts].map(([k,v])=>'<span>'+esc(v)+' × '+esc(k)+'</span>').join(""):'<span>No active items for this view.</span>';
 }
 function saveOps(id){
-  const fee=document.getElementById("fee-"+id),note=document.getElementById("note-"+id);
-  updateOrder(id,{delivery_fee:Number(fee?.value||0),admin_note:note?.value||""});
+  const fee=document.getElementById("fee-"+id),note=document.getElementById("note-"+id),pay=document.getElementById("pay-"+id);
+  updateOrder(id,{delivery_fee:Number(fee?.value||0),admin_note:note?.value||"",payment_link:pay?.value||""});
 }
 function renderOrders(os){
   const root=document.getElementById("orders");
@@ -95,7 +95,7 @@ function renderOrders(os){
     const subtotal=Number(o.subtotal_aed??o.total_aed??0),fee=Number(o.delivery_fee||0),grand=subtotal+fee;
     return '<article class="order"><div class="top"><div><b>Order #'+esc(o.order_number)+'</b><br><small>'+esc(o.customer_name)+' · '+esc(o.phone)+'</small></div><span class="badge '+(o.paid?'':'unpaid')+'">'+(o.paid?'PAID ✓':'PAYMENT PENDING')+'</span></div>'+
     '<div class="details"><b>'+esc((o.fulfillment_type||"delivery").toUpperCase())+'</b><br>'+esc(items)+'<br><b>Subtotal AED '+esc(subtotal)+'</b>'+(fee?'<br><b>Delivery AED '+esc(fee)+' · Total AED '+esc(grand)+'</b>':'')+'<br><span class="small">'+esc(o.email||"")+(o.notes?'<br>Customer notes: '+esc(o.notes):"")+(extras.length?'<br>'+esc(extras.join(" · ")):"")+(o.gift_message?'<br>Gift message: '+esc(o.gift_message):"")+'</span></div>'+
-    '<div class="ops"><label><span class="small">Delivery fee AED</span><input id="fee-'+esc(o.order_number)+'" type="number" min="0" step="1" value="'+esc(fee)+'"></label><label><span class="small">Admin note</span><textarea id="note-'+esc(o.order_number)+'">'+esc(o.admin_note||"")+'</textarea></label></div>'+
+    '<div class="ops"><label><span class="small">Delivery fee AED</span><input id="fee-'+esc(o.order_number)+'" type="number" min="0" step="1" value="'+esc(fee)+'"></label><label><span class="small">Payment link</span><input id="pay-'+esc(o.order_number)+'" type="url" value="'+esc(o.payment_link||"")+'" placeholder="https://..."></label><label style="grid-column:1/-1"><span class="small">Admin note</span><textarea id="note-'+esc(o.order_number)+'">'+esc(o.admin_note||"")+'</textarea></label></div>'+
     '<div class="buttons"><button onclick="saveOps(\''+o.order_number+'\')">Save fee/note</button><button onclick="updateOrder(\''+o.order_number+'\',{paid:'+(!o.paid)+',status:\''+(o.paid?o.status:'paid')+'\'})">'+(o.paid?'Mark unpaid':'Confirm payment')+'</button>'+statuses.map(st=>'<button class="'+(o.status===st[0]?'active':'')+'" onclick="updateOrder(\''+o.order_number+'\',{status:\''+st[0]+'\'})">'+st[1]+'</button>').join("")+'</div></article>';
   }).join("");
 }

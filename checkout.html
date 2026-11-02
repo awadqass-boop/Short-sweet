@@ -885,9 +885,10 @@ function review() {
       if (wa) wa.location.href = waLink(finalText); else location.href = waLink(finalText);
       sent(o, finalText, number);
     } catch (e) {
-      if (wa) wa.close();
-      toast(e.message || 'Could not register your order. Please try again.', 3800);
-      btn.disabled = false; btn.innerHTML = original;
+      const finalText = messageText(o);
+      if (wa) wa.location.href = waLink(finalText); else location.href = waLink(finalText);
+      toast('Order tracking is temporarily unavailable, but your WhatsApp order is ready to send.', 4200);
+      sent(o, finalText, '');
     }
   });
   openSheet();

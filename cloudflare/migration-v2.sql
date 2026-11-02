@@ -4,6 +4,7 @@
 ALTER TABLE orders ADD COLUMN delivery_address TEXT;
 ALTER TABLE orders ADD COLUMN recipient_phone TEXT;
 ALTER TABLE orders ADD COLUMN delivery_fee REAL NOT NULL DEFAULT 0;
+ALTER TABLE orders ADD COLUMN payment_link TEXT NOT NULL DEFAULT '';
 ALTER TABLE orders ADD COLUMN admin_note TEXT NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS idx_orders_preferred_date ON orders(preferred_date);

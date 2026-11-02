@@ -1,102 +1,76 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Short & Sweet — Orders Admin</title><link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png?v=2" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2"><script src="config.js"></script>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Short & Sweet — Orders Admin</title>
+<link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
+<script src="config.js"></script>
 <style>
-:root{--brown:#351811;--gold:#d8b35d;--beige:#ead7a1;--cream:#fff2cf}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--beige);color:var(--brown)}header{background:var(--brown);color:var(--cream);padding:22px 5%;display:flex;justify-content:space-between;align-items:center;gap:16px}header a{color:var(--cream);text-decoration:none}main{max-width:1180px;margin:auto;padding:38px 24px 70px}h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(40px,6vw,62px);margin:0 0 6px;letter-spacing:-2px}.panel{background:var(--cream);padding:24px;border-radius:26px;margin:24px 0;box-shadow:0 14px 34px #35181110}.login{display:grid;grid-template-columns:1fr auto;gap:10px}.login input{padding:13px;border:1px solid #35181122;border-radius:14px}.primary{border:0;background:var(--brown);color:var(--cream);padding:13px 17px;border-radius:999px;font-weight:900;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.order{background:var(--cream);padding:24px;border-radius:24px;box-shadow:0 14px 34px #35181110;transition:transform .2s ease}.order:hover{transform:translateY(-3px)}.top{display:flex;justify-content:space-between;gap:12px}.badge{background:var(--gold);padding:7px 11px;border-radius:999px;font-size:12px;font-weight:900}.unpaid{background:#ead8d1}.details{line-height:1.7;margin:15px 0}.buttons{display:flex;gap:8px;flex-wrap:wrap}.buttons button{border:0;border-radius:999px;padding:10px 12px;font-weight:800;background:#fff;cursor:pointer}.buttons button.active{background:var(--brown);color:var(--cream)}.small{font-size:12px;opacity:.72}.availability{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.availability .item{background:#fff;padding:14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center;gap:10px}.toggle{border:0;border-radius:999px;padding:8px 10px;font-weight:900;cursor:pointer}.on{background:#dfe8cf}.off{background:#ead3ca}.section-title{font-family:Georgia,serif;font-size:32px;margin:0 0 12px}.tools{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}.tools input,.tools select,.order input,.order textarea{padding:10px 12px;border:1px solid #35181122;border-radius:12px;background:#fff;font:inherit}.order textarea{width:100%;min-height:64px;resize:vertical}.ops{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.production{display:flex;flex-wrap:wrap;gap:8px}.production span{background:#fff;padding:9px 12px;border-radius:999px;font-weight:800;font-size:13px}.muted-box{background:#fff;padding:12px;border-radius:14px}.flavour-title{grid-column:1/-1;margin-top:12px;font-weight:900}@media(max-width:900px){.tools,.ops{grid-template-columns:1fr}}@media(max-width:760px){.grid,.availability{grid-template-columns:1fr}.login{grid-template-columns:1fr}}
+:root{--brown:#351811;--gold:#d8b35d;--beige:#ead7a1;--cream:#fff2cf;--ok:#dfe8cf;--off:#ead3ca}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--beige);color:var(--brown)}
+header{background:var(--brown);color:var(--cream);padding:22px 5%;display:flex;justify-content:space-between;align-items:center;gap:16px}
+header a{color:var(--cream);text-decoration:none}main{max-width:1180px;margin:auto;padding:38px 24px 70px}
+h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(40px,6vw,62px);margin:0 0 6px;letter-spacing:-2px}
+.panel{background:var(--cream);padding:24px;border-radius:26px;margin:24px 0;box-shadow:0 14px 34px #35181110}
+.login{display:grid;grid-template-columns:1fr auto;gap:10px}.login input,.tools input,.tools select,.order input,.order textarea{padding:11px 12px;border:1px solid #35181122;border-radius:12px;background:#fff;font:inherit}
+.primary{border:0;background:var(--brown);color:var(--cream);padding:13px 17px;border-radius:999px;font-weight:900;cursor:pointer}
+.section-title{font-family:Georgia,serif;font-size:32px;margin:0 0 12px}.small{font-size:12px;opacity:.72}
+.availability{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.availability .item{background:#fff;padding:14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.toggle{border:0;border-radius:999px;padding:8px 10px;font-weight:900;cursor:pointer}.on{background:var(--ok)}.off{background:var(--off)}.flavour-title{grid-column:1/-1;margin-top:12px;font-weight:900}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.day{border:0;background:#fff;border-radius:16px;padding:12px 8px;text-align:center;cursor:pointer}.day.active{background:var(--brown);color:var(--cream)}.day b{display:block;font-size:18px}.day span{font-size:11px}
+.production{display:flex;flex-wrap:wrap;gap:8px}.production span{background:#fff;padding:9px 12px;border-radius:999px;font-weight:800;font-size:13px}
+.tools{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}.tools button{border:0;border-radius:12px;background:var(--brown);color:var(--cream);font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.order{background:var(--cream);padding:24px;border-radius:24px;box-shadow:0 14px 34px #35181110}
+.top{display:flex;justify-content:space-between;gap:12px}.badge{background:var(--gold);padding:7px 11px;border-radius:999px;font-size:12px;font-weight:900;height:max-content}
+.details{line-height:1.7;margin:15px 0}.buttons{display:flex;gap:8px;flex-wrap:wrap}.buttons button,.buttons a{border:0;border-radius:999px;padding:10px 12px;font-weight:800;background:#fff;cursor:pointer;text-decoration:none;color:inherit}.buttons .active{background:var(--brown);color:var(--cream)}
+.ops{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.order textarea{width:100%;min-height:64px;resize:vertical}
+@media print{header,.login-panel,#availabilityPanel,#filterPanel,.buttons,.ops,.calendar-panel{display:none!important}body{background:#fff}.panel,.order{box-shadow:none;border:1px solid #ddd}.grid{grid-template-columns:1fr}.production span{border:1px solid #ddd}}
+@media(max-width:900px){.tools,.ops{grid-template-columns:1fr}.calendar{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:760px){.grid,.availability{grid-template-columns:1fr}.login{grid-template-columns:1fr}.calendar{grid-template-columns:repeat(2,1fr)}}
 </style></head>
-<body><header><strong>SHORT & SWEET ✦ ADMIN</strong><div><a href="index.html">Shop</a> · <a href="track.html">Tracker</a></div></header><main>
-<h1>Orders</h1><p>Your private dashboard for payment, order progress and product availability.</p>
-<section class="panel"><h2>Admin access</h2><div class="login"><input id="key" type="password" placeholder="Admin key"><button class="primary" onclick="loadAll()">Load dashboard</button></div><p class="small">The key stays only in this browser tab.</p></section>
+<body><header><strong>SHORT & SWEET ✦ ADMIN</strong><div><a href="index.html">Shop</a> · <a href="track.html">Tracker</a></div></header>
+<main>
+<h1>Orders</h1><p>Your private dashboard for confirmations, preparation, delivery and product availability.</p>
+
+<section class="panel login-panel"><h2>Admin access</h2><div class="login"><input id="key" type="password" placeholder="Admin key"><button class="primary" onclick="loadAll()">Load dashboard</button></div><p class="small">The key stays only in this browser tab.</p></section>
 <div id="message"></div>
-<section class="panel"><h2 class="section-title">Product availability</h2><p class="small">Turn an item off to show it as Sold Out on checkout and prevent new orders for it.</p><div id="availability" class="availability"><div class="small">Load dashboard to manage availability.</div></div></section>
-<section class="panel"><h2 class="section-title">Preparation summary</h2><p class="small">A quick total of active orders for the selected day.</p><div id="production" class="production"><span>Load dashboard to see production totals.</span></div></section>
-<section class="panel"><h2 class="section-title">Find orders</h2><div class="tools"><input id="search" placeholder="Search order, name or phone" oninput="applyFilters()"><select id="statusFilter" onchange="applyFilters()"><option value="">All statuses</option><option value="received">Received</option><option value="paid">Paid</option><option value="accepted">Accepted</option><option value="baking">Baking</option><option value="ready">Ready</option><option value="delivery">Out for delivery</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select><select id="dateFilter" onchange="applyFilters()"><option value="">All dates</option><option value="today">Today</option><option value="tomorrow">Tomorrow</option></select></div></section>
+
+<section class="panel calendar-panel"><h2 class="section-title">7-day order calendar</h2><div id="calendar" class="calendar"></div></section>
+
+<section class="panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><h2 class="section-title">Kitchen preparation</h2><p class="small">Totals for the orders currently shown.</p></div><button class="primary" onclick="window.print()">Print prep sheet</button></div><div id="production" class="production"><span>Load dashboard to see production totals.</span></div></section>
+
+<section class="panel" id="filterPanel"><h2 class="section-title">Find orders</h2><div class="tools">
+<input id="search" placeholder="Search order, name or phone" oninput="applyFilters()">
+<select id="statusFilter" onchange="applyFilters()"><option value="">All statuses</option><option value="received">Received</option><option value="confirmed">Confirmed</option><option value="preparing">Preparing</option><option value="ready">Ready</option><option value="delivery">Out for delivery</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select>
+<input id="specificDate" type="date" onchange="selectSpecificDate()">
+<button onclick="clearDate()">Clear date</button>
+</div></section>
+
+<section class="panel" id="availabilityPanel"><h2 class="section-title">Product & flavour availability</h2><p class="small">Turn off anything that is temporarily sold out. Checkout will reject new orders for unavailable selections.</p><div id="availability" class="availability"><div class="small">Load dashboard to manage availability.</div></div></section>
+
 <h2 class="section-title">Customer orders</h2><div id="orders" class="grid"></div>
 </main>
 <script>
-const API=(window.SHORT_SWEET_API||"").replace(/\/$/,"");
-const statuses=[["accepted","Accepted"],["baking","Baking"],["ready","Ready"],["delivery","Out for delivery"],["delivered","Delivered"],["cancelled","Cancelled"]];
-let adminKey="",allOrders=[];
+const API=(window.SHORT_SWEET_API||"").replace(/\/$/,""),WA=String(window.SHORT_SWEET_WHATSAPP||"971567708220").replace(/\D/g,"");
+const statuses=[["confirmed","Confirmed"],["preparing","Preparing"],["ready","Ready"],["delivery","Out for delivery"],["delivered","Delivered"],["cancelled","Cancelled"]];
+let adminKey="",allOrders=[],selectedDate="";
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
 function msg(t){document.getElementById("message").innerHTML='<div class="panel">'+t+'</div>'}
-function iso(d){return d.toISOString().slice(0,10)}
-function dayValue(which){const d=new Date();if(which==="tomorrow")d.setDate(d.getDate()+1);return iso(d)}
-async function loadAll(){
-  if(!API){msg("The online orders API is not connected yet.");return}
-  adminKey=document.getElementById("key").value.trim();
-  if(!adminKey){msg("Enter your admin key.");return}
-  msg("Loading dashboard...");
-  await Promise.all([loadOrders(),loadProducts()]);
-  document.getElementById("message").innerHTML="";
-}
-async function loadOrders(){
-  try{
-    const r=await fetch(API+"/admin/orders",{headers:{"X-Admin-Key":adminKey}}),d=await r.json();
-    if(!r.ok)throw new Error(d.error||"Could not load orders.");
-    allOrders=d.orders||[];applyFilters();
-  }catch(e){msg(esc(e.message||"Could not load orders."))}
-}
-async function loadProducts(){
-  try{
-    const r=await fetch(API+"/products"),d=await r.json();
-    if(!r.ok)throw new Error("Could not load products.");
-    renderAvailability(d.products||[],d.flavours||[]);
-  }catch(e){document.getElementById("availability").innerHTML='<div class="small">'+esc(e.message)+'</div>'}
-}
-async function updateOrder(id,body){
-  const r=await fetch(API+"/admin/orders/"+encodeURIComponent(id),{method:"PATCH",headers:{"Content-Type":"application/json","X-Admin-Key":adminKey},body:JSON.stringify(body)}),d=await r.json();
-  if(!r.ok){msg(esc(d.error||"Update failed."));return}
-  await loadOrders();
-}
-async function setAvailable(id,val){
-  const r=await fetch(API+"/admin/products/"+encodeURIComponent(id),{method:"PATCH",headers:{"Content-Type":"application/json","X-Admin-Key":adminKey},body:JSON.stringify({available:val})}),d=await r.json();
-  if(!r.ok){msg(esc(d.error||"Availability update failed."));return}
-  loadProducts();
-}
-function renderAvailability(ps,fs){
-  const productHtml=ps.map(p=>'<div class="item"><div><b>'+esc(p.name)+'</b><br><span class="small">AED '+esc(p.price)+'</span></div><button class="toggle '+(p.available?'on':'off')+'" onclick="setAvailable(\''+p.id+'\','+(!p.available)+')">'+(p.available?'Available':'Sold out')+'</button></div>').join("");
-  const flavourHtml=fs.length?'<div class="flavour-title">Flavours</div>'+fs.map(x=>'<div class="item"><div><b>'+esc(x.name)+'</b></div><button class="toggle '+(x.available?'on':'off')+'" onclick="setAvailable(\'flavour:'+x.id+'\','+(!x.available)+')">'+(x.available?'Available':'Unavailable')+'</button></div>').join(""):"";
-  document.getElementById("availability").innerHTML=productHtml+flavourHtml;
-}
-function applyFilters(){
-  const q=(document.getElementById("search")?.value||"").trim().toLowerCase();
-  const status=document.getElementById("statusFilter")?.value||"";
-  const df=document.getElementById("dateFilter")?.value||"";
-  const wantedDate=df?dayValue(df):"";
-  const filtered=allOrders.filter(o=>{
-    const hay=[o.order_number,o.customer_name,o.phone,o.email].join(" ").toLowerCase();
-    return(!q||hay.includes(q))&&(!status||o.status===status)&&(!wantedDate||o.preferred_date===wantedDate);
-  });
-  renderOrders(filtered);renderProduction(filtered);
-}
-function renderProduction(os){
-  const active=os.filter(o=>o.status!=="cancelled"&&o.status!=="delivered"),counts=new Map();
-  for(const o of active)for(const it of o.items||[]){
-    const key=it.name||it.sku||"Item";counts.set(key,(counts.get(key)||0)+Number(it.qty||0));
-    for(const f of it.flavours||[]){const fk="↳ "+(f.name||f.id);counts.set(fk,(counts.get(fk)||0)+1)}
-  }
-  const root=document.getElementById("production");
-  root.innerHTML=counts.size?[...counts].map(([k,v])=>'<span>'+esc(v)+' × '+esc(k)+'</span>').join(""):'<span>No active items for this view.</span>';
-}
-function saveOps(id){
-  const fee=document.getElementById("fee-"+id),note=document.getElementById("note-"+id),pay=document.getElementById("pay-"+id);
-  updateOrder(id,{delivery_fee:Number(fee?.value||0),admin_note:note?.value||"",payment_link:pay?.value||""});
-}
-function renderOrders(os){
-  const root=document.getElementById("orders");
-  if(!os.length){root.innerHTML='<div class="panel">No matching orders.</div>';return}
-  root.innerHTML=os.map(o=>{
-    const items=(o.items||[]).map(x=>x.qty+" × "+x.name+(x.flavours?.length?" — "+x.flavours.map(f=>f.name||f.id).join(" / "):"")).join(", ");
-    let extras=[];
-    if(o.preferred_date)extras.push("Date: "+o.preferred_date+(o.preferred_time?" · "+o.preferred_time:""));
-    if(o.delivery_address)extras.push("Address: "+o.delivery_address);
-    if(o.is_gift)extras.push("Gift for "+(o.recipient_name||"recipient")+(o.recipient_phone?" · "+o.recipient_phone:""));
-    if(o.promo_code)extras.push("Promo: "+o.promo_code);
-    const subtotal=Number(o.subtotal_aed??o.total_aed??0),fee=Number(o.delivery_fee||0),grand=subtotal+fee;
-    return '<article class="order"><div class="top"><div><b>Order #'+esc(o.order_number)+'</b><br><small>'+esc(o.customer_name)+' · '+esc(o.phone)+'</small></div><span class="badge '+(o.paid?'':'unpaid')+'">'+(o.paid?'PAID ✓':'PAYMENT PENDING')+'</span></div>'+
-    '<div class="details"><b>'+esc((o.fulfillment_type||"delivery").toUpperCase())+'</b><br>'+esc(items)+'<br><b>Subtotal AED '+esc(subtotal)+'</b>'+(fee?'<br><b>Delivery AED '+esc(fee)+' · Total AED '+esc(grand)+'</b>':'')+'<br><span class="small">'+esc(o.email||"")+(o.notes?'<br>Customer notes: '+esc(o.notes):"")+(extras.length?'<br>'+esc(extras.join(" · ")):"")+(o.gift_message?'<br>Gift message: '+esc(o.gift_message):"")+'</span></div>'+
-    '<div class="ops"><label><span class="small">Delivery fee AED</span><input id="fee-'+esc(o.order_number)+'" type="number" min="0" step="1" value="'+esc(fee)+'"></label><label><span class="small">Payment link</span><input id="pay-'+esc(o.order_number)+'" type="url" value="'+esc(o.payment_link||"")+'" placeholder="https://..."></label><label style="grid-column:1/-1"><span class="small">Admin note</span><textarea id="note-'+esc(o.order_number)+'">'+esc(o.admin_note||"")+'</textarea></label></div>'+
-    '<div class="buttons"><button onclick="saveOps(\''+o.order_number+'\')">Save fee/note</button><button onclick="updateOrder(\''+o.order_number+'\',{paid:'+(!o.paid)+',status:\''+(o.paid?o.status:'paid')+'\'})">'+(o.paid?'Mark unpaid':'Confirm payment')+'</button>'+statuses.map(st=>'<button class="'+(o.status===st[0]?'active':'')+'" onclick="updateOrder(\''+o.order_number+'\',{status:\''+st[0]+'\'})">'+st[1]+'</button>').join("")+'</div></article>';
-  }).join("");
-}
+function localISO(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return y+"-"+m+"-"+day}
+function datePlus(n){const d=new Date();d.setDate(d.getDate()+n);return localISO(d)}
+function wa(phone,text){return"https://wa.me/"+String(phone||"").replace(/\D/g,"")+"?text="+encodeURIComponent(text)}
+async function loadAll(){if(!API){msg("The orders API is not connected yet. WhatsApp orders still work, but this dashboard needs the Cloudflare API URL in config.js.");return}adminKey=document.getElementById("key").value.trim();if(!adminKey){msg("Enter your admin key.");return}msg("Loading dashboard...");await Promise.all([loadOrders(),loadProducts()]);document.getElementById("message").innerHTML=""}
+async function loadOrders(){try{const r=await fetch(API+"/admin/orders",{headers:{"X-Admin-Key":adminKey}}),d=await r.json();if(!r.ok)throw new Error(d.error||"Could not load orders.");allOrders=d.orders||[];renderCalendar();applyFilters()}catch(e){msg(esc(e.message||"Could not load orders."))}}
+async function loadProducts(){try{const r=await fetch(API+"/products"),d=await r.json();if(!r.ok)throw new Error("Could not load products.");renderAvailability(d.products||[],d.flavours||[])}catch(e){document.getElementById("availability").innerHTML='<div class="small">'+esc(e.message)+'</div>'}}
+async function updateOrder(id,body){const r=await fetch(API+"/admin/orders/"+encodeURIComponent(id),{method:"PATCH",headers:{"Content-Type":"application/json","X-Admin-Key":adminKey},body:JSON.stringify(body)}),d=await r.json();if(!r.ok){msg(esc(d.error||"Update failed."));return}await loadOrders()}
+async function setAvailable(id,val){const r=await fetch(API+"/admin/products/"+encodeURIComponent(id),{method:"PATCH",headers:{"Content-Type":"application/json","X-Admin-Key":adminKey},body:JSON.stringify({available:val})}),d=await r.json();if(!r.ok){msg(esc(d.error||"Availability update failed."));return}loadProducts()}
+function renderAvailability(ps,fs){const products=ps.map(p=>'<div class="item"><div><b>'+esc(p.name)+'</b><br><span class="small">AED '+esc(p.price)+'</span></div><button class="toggle '+(p.available?'on':'off')+'" onclick="setAvailable(\''+p.id+'\','+(!p.available)+')">'+(p.available?'Available':'Sold out')+'</button></div>').join("");const flavours=fs.length?'<div class="flavour-title">Flavours</div>'+fs.map(x=>'<div class="item"><b>'+esc(x.name)+'</b><button class="toggle '+(x.available?'on':'off')+'" onclick="setAvailable(\'flavour:'+x.id+'\','+(!x.available)+')">'+(x.available?'Available':'Unavailable')+'</button></div>').join(""):"";document.getElementById("availability").innerHTML=products+flavours}
+function renderCalendar(){const root=document.getElementById("calendar");root.innerHTML=Array.from({length:7},(_,i)=>{const date=datePlus(i),count=allOrders.filter(o=>o.preferred_date===date&&o.status!=="cancelled").length,d=new Date();d.setDate(d.getDate()+i);return'<button class="day '+(selectedDate===date?'active':'')+'" onclick="chooseDate(\''+date+'\')"><span>'+d.toLocaleDateString("en-US",{weekday:"short"})+'</span><b>'+d.getDate()+'</b><span>'+count+' order'+(count===1?'':'s')+'</span></button>'}).join("")}
+function chooseDate(d){selectedDate=d;document.getElementById("specificDate").value=d;renderCalendar();applyFilters()}
+function selectSpecificDate(){selectedDate=document.getElementById("specificDate").value;renderCalendar();applyFilters()}
+function clearDate(){selectedDate="";document.getElementById("specificDate").value="";renderCalendar();applyFilters()}
+function applyFilters(){const q=(document.getElementById("search").value||"").trim().toLowerCase(),status=document.getElementById("statusFilter").value;const filtered=allOrders.filter(o=>{const hay=[o.order_number,o.customer_name,o.phone,o.email].join(" ").toLowerCase();return(!q||hay.includes(q))&&(!status||o.status===status)&&(!selectedDate||o.preferred_date===selectedDate)});renderOrders(filtered);renderProduction(filtered)}
+function renderProduction(os){const active=os.filter(o=>!["cancelled","delivered"].includes(o.status)),counts=new Map();for(const o of active)for(const it of o.items||[]){const key=it.name||it.sku||"Item";counts.set(key,(counts.get(key)||0)+Number(it.qty||0));for(const f of it.flavours||[]){const fk="↳ "+(f.name||f.id);counts.set(fk,(counts.get(fk)||0)+1)}}document.getElementById("production").innerHTML=counts.size?[...counts].map(([k,v])=>'<span>'+esc(v)+' × '+esc(k)+'</span>').join(""):'<span>No active items for this view.</span>'}
+function saveOps(id){const fee=document.getElementById("fee-"+id),note=document.getElementById("note-"+id);updateOrder(id,{delivery_fee:Number(fee?.value||0),admin_note:note?.value||""})}
+function statusMessage(o,status){const n=o.customer_name||"there",num=o.order_number;const map={confirmed:"Hi "+n+"! Your Short & Sweet order #"+num+" is confirmed ✨ We’ll keep you updated here.",preparing:"Hi "+n+"! Your order #"+num+" is now being prepared 🍪",ready:"Hi "+n+"! Your order #"+num+" is ready 🤎",delivery:"Hi "+n+"! Your order #"+num+" is out for delivery 🏃🍪",delivered:"Hi "+n+"! Your order #"+num+" has been delivered. Enjoyyy! 🤎"};return map[status]||("Hi "+n+"! Here’s an update on order #"+num+".")}
+function renderOrders(os){const root=document.getElementById("orders");if(!os.length){root.innerHTML='<div class="panel">No matching orders.</div>';return}root.innerHTML=os.map(o=>{const items=(o.items||[]).map(x=>x.qty+" × "+(x.name||x.sku)+(x.flavours?.length?" — "+x.flavours.map(f=>f.name||f.id).join(" / "):"")).join(", ");const subtotal=Number(o.subtotal_aed??o.total_aed??0),fee=Number(o.delivery_fee||0),grand=subtotal+fee;let extras=[];if(o.preferred_date)extras.push("Date: "+o.preferred_date+(o.preferred_time?" · "+o.preferred_time:""));if(o.delivery_address)extras.push("Address: "+o.delivery_address);if(o.is_gift)extras.push("Gift for "+(o.recipient_name||"recipient")+(o.recipient_phone?" · "+o.recipient_phone:""));const quick=statuses.filter(s=>!["cancelled"].includes(s[0])).map(st=>'<a target="_blank" rel="noopener" href="'+esc(wa(o.phone,statusMessage(o,st[0])))+'">Message: '+st[1]+'</a>').join("");return'<article class="order"><div class="top"><div><b>Order #'+esc(o.order_number)+'</b><br><small>'+esc(o.customer_name)+' · '+esc(o.phone)+'</small></div><span class="badge">'+esc((o.status||"received").toUpperCase())+'</span></div><div class="details"><b>'+esc((o.fulfillment_type||"delivery").toUpperCase())+'</b><br>'+esc(items)+'<br><b>Subtotal AED '+esc(subtotal)+'</b>'+(fee?'<br><b>Delivery AED '+esc(fee)+' · Total AED '+esc(grand)+'</b>':'')+'<br><span class="small">'+esc(o.email||"")+(o.notes?'<br>Customer notes: '+esc(o.notes):"")+(extras.length?'<br>'+esc(extras.join(" · ")):"")+(o.gift_message?'<br>Gift message: '+esc(o.gift_message):"")+'</span></div><div class="ops"><label><span class="small">Delivery fee AED</span><input id="fee-'+esc(o.order_number)+'" type="number" min="0" step="1" value="'+esc(fee)+'"></label><label><span class="small">Admin / kitchen note</span><textarea id="note-'+esc(o.order_number)+'">'+esc(o.admin_note||"")+'</textarea></label></div><div class="buttons"><button onclick="saveOps(\''+o.order_number+'\')">Save fee/note</button>'+statuses.map(st=>'<button class="'+(o.status===st[0]?'active':'')+'" onclick="updateOrder(\''+o.order_number+'\',{status:\''+st[0]+'\'})">'+st[1]+'</button>').join("")+'</div><div class="buttons" style="margin-top:10px"><a target="_blank" rel="noopener" href="'+esc(wa(o.phone,"Hi "+(o.customer_name||"")+"! About your Short & Sweet order #"+o.order_number+": "))+'">WhatsApp customer</a>'+quick+'</div></article>'}).join("")}
+renderCalendar();
 </script></body></html>

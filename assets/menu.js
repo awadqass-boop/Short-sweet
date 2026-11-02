@@ -42,6 +42,15 @@ window.SS_MENU = (function () {
   // Pre-order notice (from the menu): 10–20 pieces 48 hours, above 20 pieces 5 days, customised 7 days.
   // Smaller orders still need to be placed at least a day ahead.
   const LEAD = {base: 1, mid: 2, large: 5, custom: 7};
+  // Product-care information is intentionally conservative until the owner supplies
+  // exact ingredients, allergens, storage instructions and shelf life.
+  const CARE = {
+    khaliya: {allergy:"Please ask us about ingredients and allergens before ordering if you have dietary requirements.", storage:"Storage and serving guidance is confirmed with your order.", shelf:"Shelf life is confirmed with your order."},
+    shorties:{allergy:"Please ask us about ingredients and allergens before ordering if you have dietary requirements.", storage:"Storage guidance is confirmed with your order.", shelf:"Shelf life is confirmed with your order."},
+    bowl:{allergy:"Flavours can vary. Please ask us about ingredients and allergens before ordering.", storage:"Storage guidance is confirmed with your order.", shelf:"Shelf life is confirmed with your order."},
+    voucher:{allergy:"Not applicable.",storage:"Not applicable.",shelf:"Not applicable."},
+    custom:{allergy:"Please tell us about dietary requirements when requesting a custom order.",storage:"Confirmed with your custom order.",shelf:"Confirmed with your custom order."}
+  };
 
   const PROD = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
   function price(key) {
@@ -56,5 +65,5 @@ window.SS_MENU = (function () {
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => fill()); else fill();
-  return {FLAVOURS, PRODUCTS, PROD, LEAD, price, fill};
+  return {FLAVOURS, PRODUCTS, PROD, LEAD, CARE, price, fill};
 })();

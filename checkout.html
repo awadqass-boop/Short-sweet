@@ -285,7 +285,8 @@ textarea.input{height:auto;min-height:84px;padding:12px 14px;resize:vertical;lin
         <label class="toggle"><input type="checkbox" data-bind="gift"> This order is a gift</label>
         <div class="collapse" id="giftWrap"><div><div class="form-grid two">
           <label class="fld"><span class="lbl">Recipient’s name</span><input class="input" data-bind="giftTo" autocomplete="off" placeholder="Who is it for?"></label>
-          <label class="fld"><span class="lbl">Gift message <small>(optional)</small></span><input class="input" data-bind="giftMsg" autocomplete="off" placeholder="e.g. Eid Mubarak!"></label>
+          <label class="fld"><span class="lbl">Recipient’s phone <small>(optional)</small></span><input class="input" data-bind="giftPhone" inputmode="tel" autocomplete="off" placeholder="+971..."></label>
+          <label class="fld span-2"><span class="lbl">Gift message <small>(optional)</small></span><input class="input" data-bind="giftMsg" autocomplete="off" placeholder="e.g. Eid Mubarak!"></label>
         </div></div></div>
       </div>
     </section>
@@ -335,6 +336,7 @@ textarea.input{height:auto;min-height:84px;padding:12px 14px;resize:vertical;lin
    ===================================================================== */
 const M = window.SS_MENU;
 const WA = String(window.SHORT_SWEET_WHATSAPP || '971567708220').replace(/\D/g, '');
+const API = String(window.SHORT_SWEET_API || '').replace(/\/$/, '');
 const SHEETS_URL = window.SHORT_SWEET_SHEETS_URL || '';
 
 /* ---------- small helpers ---------- */
@@ -370,6 +372,24 @@ const hasFlavour = l => l.kind === 'bowl' || (l.kind === 'shorties' && !!(varian
 const slots = l => l.kind === 'bowl' ? (+l.pack || 1) : 1;
 const thumbSrc = l => l.kind === 'bowl' ? sizeOf(l.size).img : l.kind === 'custom' ? null : (variantOf(l) || {}).img || PROD[l.kind].img;
 const missingFlavour = l => hasFlavour(l) && Array.from({length: slots(l)}, (_, i) => (l.flavours || [])[i]).some(id => !FLAV[id]);
+const skuOf = l => {
+  if (l.kind === 'custom') return 'custom';
+  if (l.kind === 'bowl') return `bowl_${l.size}_${+l.pack || 1}`;
+  return `${l.kind}_${l.variant}`;
+};
+let liveAvailability = null;
+const isAvailable = l => !liveAvailability || liveAvailability.products[skuOf(l)] !== false;
+const flavourAvailable = id => !liveAvailability || liveAvailability.flavours[id] !== false;
+async function loadAvailability() {
+  if (!API) return;
+  try {
+    const r = await fetch(API + '/products'), d = await r.json();
+    if (!r.ok) return;
+    liveAvailability = {products:{}, flavours:{}};
+    (d.products || []).forEach(x => liveAvailability.products[x.id] = x.available !== false);
+    (d.flavours || []).forEach(x => liveAvailability.flavours[x.id] = x.available !== false);
+  } catch (e) {}
+}
 
 function flavourText(l) {
   if (!hasFlavour(l)) return '';
@@ -411,7 +431,7 @@ function headSub(l) {
 /* ---------- order state ---------- */
 function newOrder(keep = {}) {
   return {lines: [], method: 'delivery', name: keep.name || '', phone: keep.phone || '', email: keep.email || '', address: keep.address || '',
-    date: '', time: '', notes: '', gift: false, giftTo: '', giftMsg: ''};
+    date: '', time: '', notes: '', gift: false, giftTo: '', giftPhone: '', giftMsg: ''};
 }
 function newLine(kind, opt = {}) {
   const p = PROD[kind] || PROD.khaliya;
@@ -700,6 +720,11 @@ function problems() {
   order.lines.forEach(l => {
     if (missingFlavour(l)) out.push({msg: `Pick a flavour for: ${shortTitle(l)}`, line: l});
     else if (l.kind === 'custom' && !(l.desc || '').trim()) out.push({msg: 'Tell us what you’d like for your custom request', line: l, field: 'desc'});
+    else if (!isAvailable(l)) out.push({msg: `${shortTitle(l)} is currently sold out`, line: l});
+    else {
+      const unavailableFlavour = (l.flavours || []).find(id => id && !flavourAvailable(id));
+      if (unavailableFlavour) out.push({msg: `${FLAV[unavailableFlavour]?.name || 'That flavour'} is currently unavailable`, line: l});
+    }
   });
   const need = (key, msg) => { const el = $(`[data-bind=${key}]`); if (!String(order[key] || '').trim()) out.push({msg, el}); };
   need('name', 'Please add your name');
@@ -735,14 +760,40 @@ function buildOrder() {
     name: order.name.trim(), phone: order.phone.trim(), email: (order.email || '').trim(),
     method: order.method, address: order.method === 'delivery' ? order.address.trim() : '',
     date: order.date, time: (order.time || '').trim(), instructions: (order.notes || '').trim(),
-    gift: !!order.gift, giftTo: order.gift ? (order.giftTo || '').trim() : '', giftMessage: order.gift ? (order.giftMsg || '').trim() : '',
-    items: order.lines.map(l => { const d = describe(l); return {product: d.title, flavour: d.fl, note: d.note, qty: qtyOf(l), unitPrice: unitPrice(l), total: lineTotal(l), custom: l.kind === 'custom'}; }),
+    gift: !!order.gift, giftTo: order.gift ? (order.giftTo || '').trim() : '',
+    giftPhone: order.gift ? (order.giftPhone || '').trim() : '',
+    giftMessage: order.gift ? (order.giftMsg || '').trim() : '',
+    items: order.lines.map(l => {
+      const d = describe(l);
+      return {
+        sku: skuOf(l), product: d.title, flavour: d.fl, flavourIds: (l.flavours || []).filter(Boolean),
+        note: d.note, qty: qtyOf(l), unitPrice: unitPrice(l), total: lineTotal(l),
+        custom: l.kind === 'custom', description: l.kind === 'custom' ? (l.desc || '').trim() : ''
+      };
+    }),
     itemCount: T.items, subtotal: T.sub,
   };
 }
-function messageText(o) {
+function apiPayload(o) {
+  return {
+    name:o.name, phone:o.phone, email:o.email, fulfillment:o.method, address:o.address,
+    preferred_date:o.date, preferred_time:o.time, notes:o.instructions,
+    is_gift:o.gift, recipient_name:o.giftTo, recipient_phone:o.giftPhone, gift_message:o.giftMessage,
+    hide_price:false, promo_code:'',
+    items:o.items.map(it => ({sku:it.sku, qty:it.qty, flavours:it.flavourIds || [], note:it.note, custom:it.custom, name:it.product, description:it.description}))
+  };
+}
+async function registerOrder(o) {
+  if (!API) return null;
+  const r = await fetch(API + '/orders', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(apiPayload(o))});
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || 'Could not register your order.');
+  return d;
+}
+function messageText(o, orderNumber = '') {
   const L = [];
   L.push('Hi Short & Sweet! I’d like to place an order:', '');
+  if (orderNumber) L.push(`Order #: ${orderNumber}`, '');
   o.items.forEach((it, i) => {
     L.push(`${i + 1}. ${it.qty} × ${it.product}${it.flavour ? ' – ' + it.flavour : ''} — ${it.custom ? 'price to be confirmed' : aed(it.total)}`);
     if (it.note) L.push(`   Note: ${it.note}`);
@@ -755,7 +806,7 @@ function messageText(o) {
   L.push(`Date: ${fmtDate(o.date)}`);
   if (o.time) L.push(`Time: ${o.time}`);
   if (o.instructions) L.push(`Instructions: ${o.instructions}`);
-  if (o.gift) L.push(`Gift for: ${o.giftTo || '—'}${o.giftMessage ? ` · Message: "${o.giftMessage}"` : ''}`);
+  if (o.gift) L.push(`Gift for: ${o.giftTo || '—'}${o.giftPhone ? ` · ${o.giftPhone}` : ''}${o.giftMessage ? ` · Message: "${o.giftMessage}"` : ''}`);
   return L.join('\n');
 }
 const waLink = text => `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
@@ -786,7 +837,7 @@ function review() {
   if (list.length) return showProblems(list);
   const o = buildOrder(), text = messageText(o);
   const rows = [['Name', o.name], ['Phone', o.phone], ['Email', o.email], [o.method === 'delivery' ? 'Deliver to' : 'Pickup', o.method === 'delivery' ? o.address : 'Mohammed Bin Zayed City, Abu Dhabi'],
-    ['Date', fmtDate(o.date)], ['Time', o.time], ['Instructions', o.instructions], ['Gift for', o.gift ? [o.giftTo, o.giftMessage && `“${o.giftMessage}”`].filter(Boolean).join('\n') || 'Yes' : '']]
+    ['Date', fmtDate(o.date)], ['Time', o.time], ['Instructions', o.instructions], ['Gift for', o.gift ? [o.giftTo, o.giftPhone, o.giftMessage && `“${o.giftMessage}”`].filter(Boolean).join('\n') || 'Yes' : '']]
     .filter(r => r[1]).map(([k, v]) => `<div><span>${esc(k)}</span><span>${esc(v)}</span></div>`).join('');
   $('#rv-title').textContent = 'Review your order';
   $('#rvBody').innerHTML = `
@@ -796,11 +847,31 @@ function review() {
     </div>
     <div class="rv-section"><h3 class="display">${o.method === 'delivery' ? 'Delivery' : 'Pickup'}</h3><div class="rv-rows">${rows}</div></div>
     <p class="fine">Tapping send opens WhatsApp with your order written out — just press send there. We’ll reply to confirm the total${o.method === 'delivery' ? ', delivery fee' : ''} and payment.</p>`;
-  $('#rvFoot').innerHTML = `<button class="btn ghost" data-close>${icon('edit')}Edit</button><a class="btn" id="btnSend" href="${esc(waLink(text))}" target="_blank" rel="noopener" data-ss-event="order_whatsapp">${icon('chat')}Send on WhatsApp</a>`;
-  $('#btnSend').addEventListener('click', () => sent(o, text));
+  $('#rvFoot').innerHTML = `<button class="btn ghost" data-close>${icon('edit')}Edit</button><button class="btn" id="btnSend" data-ss-event="order_whatsapp">${icon('chat')}Send on WhatsApp</button>`;
+  $('#btnSend').addEventListener('click', async () => {
+    const btn = $('#btnSend'); if (btn.disabled) return;
+    btn.disabled = true;
+    const original = btn.innerHTML; btn.textContent = 'Preparing order…';
+    const wa = window.open('about:blank', '_blank');
+    try {
+      const remote = await registerOrder(o);
+      const number = remote?.order_number || '';
+      const finalText = messageText(o, number);
+      if (number) {
+        o.orderNumber = number;
+        store.set('ss.lastOrder.v1', {...o, orderNumber:number});
+      }
+      if (wa) wa.location.href = waLink(finalText); else location.href = waLink(finalText);
+      sent(o, finalText, number);
+    } catch (e) {
+      if (wa) wa.close();
+      toast(e.message || 'Could not register your order. Please try again.', 3800);
+      btn.disabled = false; btn.innerHTML = original;
+    }
+  });
   openSheet();
 }
-function sent(o, text) {
+function sent(o, text, orderNumber = '') {
   sendToSheet(o);
   store.set('ss.lastOrder.v1', o);
   const keep = {name: order.name, phone: order.phone, email: order.email, address: order.address};
@@ -808,11 +879,12 @@ function sent(o, text) {
     $('#rv-title').textContent = 'Thank you!';
     $('#rvBody').innerHTML = `<div class="sent"><div class="badge-ok">${icon('check')}</div><h3 class="display">Your order is on its way to us</h3>
       <p>WhatsApp should now be open with your order — press send there if you haven’t yet. We’ll reply to confirm everything before we bake.</p>
+      ${orderNumber ? `<p><b>Order #${esc(orderNumber)}</b> · <a class="text-link" href="track.html?order=${encodeURIComponent(orderNumber)}&phone=${encodeURIComponent(o.phone)}">Track order</a></p>` : ''}
       <p style="margin-top:14px"><a class="text-link" href="${esc(waLink(text))}" target="_blank" rel="noopener">Open WhatsApp again</a> · <a class="text-link" href="#" id="copyOrder">Copy order text</a></p></div>`;
     $('#rvFoot').innerHTML = `<a class="btn ghost" href="index.html">Back to home</a><button class="btn" data-close>Start a new order</button>`;
     $('#copyOrder').addEventListener('click', e => { e.preventDefault(); (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast('Order copied'), () => toast('Couldn’t copy — please use WhatsApp')); });
     order = newOrder(keep); openLineId = null;
-    store.set(KEY, order); renderLines(); fillBinds(); syncMethod(); refresh();
+    store.set(KEY, order); loadAvailability(); renderLines(); fillBinds(); syncMethod(); refresh();
   }, 300);
 }
 $('#btnReview').addEventListener('click', review);

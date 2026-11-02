@@ -23,5 +23,10 @@ window.SHORT_SWEET_DELIVERY_ZONES = [];
 // Example: {name:"Aisha",text:"Beautiful packaging and so good.",source:"Instagram"}
 window.SHORT_SWEET_REVIEWS = [];
 
+// Optional labels such as "Best seller", "New" or "Limited".
+// Leave empty until you decide which products should carry a label.
+// Keys: khaliya, shorties, bowl, voucher
+window.SHORT_SWEET_PRODUCT_BADGES = {};
+
 // Optional Google Analytics 4 Measurement ID, e.g. G-XXXXXXXXXX.
 window.SHORT_SWEET_GA_ID = "";

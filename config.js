@@ -1,5 +1,5 @@
 // Short & Sweet live configuration
-window.SHORT_SWEET_API = "";
+window.SHORT_SWEET_API = "https://short-sweet-api.rouqaiayahia.workers.dev";
 
 // Orders from the order page are sent to this WhatsApp number (digits only, with country code).
 window.SHORT_SWEET_WHATSAPP = "971567708220";

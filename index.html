@@ -327,7 +327,7 @@
   <div class="steps reveal">
     <div class="step"><h3>Pick your treats</h3><p>Choose sizes, flavours and quantities on the order page — add a note for any item.</p></div>
     <div class="step"><h3>Choose a day</h3><p>Delivery or pickup, your preferred date and time, and any instructions for us.</p></div>
-    <div class="step"><h3>Send it to us</h3><p>Your order comes straight to our WhatsApp. We confirm the details, delivery and payment.</p></div>
+    <div class="step"><h3>Send it to us</h3><p>Your order comes straight to our WhatsApp. We confirm the details, delivery and final total.</p></div>
     <div class="step"><h3>We bake it fresh</h3><p>Everything is made to order in small batches, ready for your day.</p></div>
   </div>
   <div class="plan reveal">
@@ -365,6 +365,7 @@
     <div class="custom-card"><h3>Celebrations</h3><p>Birthday tables, gatherings and sweet little extras.</p></div>
     <div class="custom-card"><h3>Seasonal gifting</h3><p>Ramadan, Eid and family occasions with advance notice.</p></div>
     <div class="custom-card"><h3>Customised packaging</h3><p>Please allow 7 days so we can confirm the details and prepare it properly.</p></div>
+    <div class="custom-card"><h3>Corporate &amp; bulk orders</h3><p>Office treats, event gifting and larger quantities — message us with your date, quantity and packaging needs.</p></div>
   </div>
   <div class="actions"><a class="btn gold" href="checkout.html?add=custom">Request a custom order</a><a class="btn outline-light" href="https://wa.me/971567708220?text=Hi%20Short%20%26%20Sweet!%20I%27d%20like%20to%20discuss%20a%20custom%20order." target="_blank" rel="noopener">Message on WhatsApp</a></div>
 </div></section>
@@ -399,6 +400,7 @@
   <div class="actions"><a class="btn ghost" href="https://www.instagram.com/shortnsweet.ae/" target="_blank" rel="noopener">Follow on Instagram</a></div>
 </div></section>
 
+<section id="reviews" hidden style="padding-top:20px"><div class="wrap"><div class="reveal"><div class="eyebrow">Customer love</div><h2 class="section-title">Sweet words, <em>from you.</em></h2></div><div id="reviewGrid" class="custom-grid reveal"></div></div></section>
 <section id="faq" style="padding-top:20px"><div class="wrap faq-wrap">
   <div class="reveal">
     <div class="eyebrow">Good to know</div>
@@ -406,7 +408,7 @@
     <p class="sub">Can’t find what you need? Message us on WhatsApp and we’ll help.</p>
   </div>
   <div class="faq reveal">
-    <details><summary>How do I place an order?</summary><p>Open the order page, choose your treats, sizes and flavours, then add your delivery or pickup details. Your order is sent to our WhatsApp, and we confirm everything — including the total and payment — before we bake.</p></details>
+    <details><summary>How do I place an order?</summary><p>Open the order page, choose your treats, sizes and flavours, then add your delivery or pickup details. Your order is sent to our WhatsApp, and we confirm everything — including the final total and delivery — before we bake.</p></details>
     <details><summary>How early should I order?</summary><p>Everything is made to order. Orders of 10–20 pieces need 48 hours’ notice, orders above 20 pieces need 5 days, and customised orders need 7 days.</p></details>
     <details><summary>Do you offer delivery and pickup?</summary><p>Yes, both. Choose your preference while ordering — delivery details and any delivery fee are confirmed with your order.</p></details>
     <details><summary>Which flavours can I choose?</summary><p>Glass bowls and Shortie Pop Jars come in Coconut Cream (dark, white or mixed chocolate), Salted Pistachio and Salted Caramel. For a set of two or three bowls, you can pick a different flavour for each bowl.</p></details>
@@ -440,5 +442,12 @@
 </div></footer>
 <a class="wa-float" aria-label="Chat on WhatsApp" href="https://wa.me/971567708220?text=Hi%20Short%20%26%20Sweet!" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.6 7.1L4 20l1.4-4.2A8 8 0 1 1 20 11.5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg></a>
 <a class="mobile-order" href="checkout.html">Start your order</a>
+<script>
+(function(){
+  const reviews=window.SHORT_SWEET_REVIEWS||[],section=document.getElementById("reviews"),grid=document.getElementById("reviewGrid");
+  if(reviews.length&&section&&grid){grid.innerHTML=reviews.map(r=>'<div class="custom-card"><h3>'+String(r.name||"Customer").replace(/[&<>"]/g,"")+'</h3><p>“'+String(r.text||"").replace(/[&<>"]/g,"")+'”'+(r.source?'<br><small>'+String(r.source).replace(/[&<>"]/g,"")+'</small>':'')+'</p></div>').join("");section.hidden=false}
+  const tik=window.SHORT_SWEET_TIKTOK||"";if(tik){const connect=[...document.querySelectorAll(".footer-links strong")].find(x=>x.textContent.trim()==="Connect")?.parentElement;if(connect){const a=document.createElement("a");a.href=tik;a.target="_blank";a.rel="noopener";a.textContent="TikTok";connect.appendChild(a)}}
+})();
+</script>
 </body>
 </html>

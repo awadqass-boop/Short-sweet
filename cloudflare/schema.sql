@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS orders (
   items_json TEXT NOT NULL,
   total_aed REAL NOT NULL,
   delivery_fee REAL NOT NULL DEFAULT 0,
+  payment_link TEXT NOT NULL DEFAULT '',
   paid INTEGER NOT NULL DEFAULT 0,
   status TEXT NOT NULL DEFAULT 'received',
   admin_note TEXT NOT NULL DEFAULT '',

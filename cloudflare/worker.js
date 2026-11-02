@@ -82,31 +82,31 @@ async function createOrder(request,env){
       (order_number,customer_name,phone,email,notes,fulfillment_type,delivery_address,preferred_date,preferred_time,is_gift,recipient_name,recipient_phone,gift_message,hide_price,notification_preference,promo_code,items_json,total_aed,delivery_fee,payment_link,paid,status,admin_note)
       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,'',0,'received','')`)
       .bind(orderNumber,name,phone,email,notes,fulfillment,address,preferredDate,preferredTime,isGift?1:0,recipientName,recipientPhone,giftMessage,hidePrice?1:0,"whatsapp",promo,JSON.stringify(normalized),subtotal).run();
-      return json(request,{ok:true,order_number:orderNumber,subtotal_aed:subtotal,delivery_fee:0,total_aed:subtotal,paid:false,status:"received",has_custom:hasCustom},201);
+      return json(request,{ok:true,order_number:orderNumber,subtotal_aed:subtotal,delivery_fee:0,total_aed:subtotal,status:"received",has_custom:hasCustom},201);
     }catch(e){if(!String(e).toLowerCase().includes("unique"))throw e}
   }
   return json(request,{error:"Could not create an order number. Try again."},500);
 }
 async function getPublicOrder(request,env,orderNumber,url){
   const phone=cleanPhone(url.searchParams.get("phone")); if(!phone)return json(request,{error:"Phone number is required."},400);
-  const row=await env.DB.prepare(`SELECT order_number,customer_name,phone,fulfillment_type,delivery_address,preferred_date,preferred_time,is_gift,items_json,total_aed,delivery_fee,payment_link,paid,status,created_at FROM orders WHERE order_number=?`).bind(orderNumber.toUpperCase()).first();
+  const row=await env.DB.prepare(`SELECT order_number,customer_name,phone,fulfillment_type,delivery_address,preferred_date,preferred_time,is_gift,items_json,total_aed,delivery_fee,status,created_at FROM orders WHERE order_number=?`).bind(orderNumber.toUpperCase()).first();
   if(!row||cleanPhone(row.phone)!==phone)return json(request,{error:"Order not found."},404);
   const fee=Number(row.delivery_fee||0),subtotal=Number(row.total_aed||0);
-  return json(request,{...row,is_gift:!!row.is_gift,paid:!!row.paid,subtotal_aed:subtotal,delivery_fee:fee,total_aed:subtotal+fee,items:JSON.parse(row.items_json||"[]")});
+  const legacy={paid:"confirmed",accepted:"confirmed",baking:"preparing"};
+  return json(request,{...row,status:legacy[row.status]||row.status,is_gift:!!row.is_gift,subtotal_aed:subtotal,delivery_fee:fee,total_aed:subtotal+fee,items:JSON.parse(row.items_json||"[]")});
 }
 async function listOrders(request,env){
   if(!requireAdmin(request,env))return json(request,{error:"Unauthorized"},401);
-  const r=await env.DB.prepare(`SELECT order_number,customer_name,phone,email,notes,fulfillment_type,delivery_address,preferred_date,preferred_time,is_gift,recipient_name,recipient_phone,gift_message,hide_price,notification_preference,promo_code,items_json,total_aed,delivery_fee,payment_link,paid,status,admin_note,created_at FROM orders ORDER BY id DESC LIMIT 500`).all();
-  return json(request,{orders:(r.results||[]).map(x=>({...x,paid:!!x.paid,is_gift:!!x.is_gift,hide_price:!!x.hide_price,subtotal_aed:Number(x.total_aed||0),delivery_fee:Number(x.delivery_fee||0),grand_total_aed:Number(x.total_aed||0)+Number(x.delivery_fee||0),items:JSON.parse(x.items_json||"[]")}))});
+  const r=await env.DB.prepare(`SELECT order_number,customer_name,phone,email,notes,fulfillment_type,delivery_address,preferred_date,preferred_time,is_gift,recipient_name,recipient_phone,gift_message,hide_price,notification_preference,promo_code,items_json,total_aed,delivery_fee,status,admin_note,created_at FROM orders ORDER BY id DESC LIMIT 500`).all();
+  const legacy={paid:"confirmed",accepted:"confirmed",baking:"preparing"};
+  return json(request,{orders:(r.results||[]).map(x=>({...x,status:legacy[x.status]||x.status,is_gift:!!x.is_gift,hide_price:!!x.hide_price,subtotal_aed:Number(x.total_aed||0),delivery_fee:Number(x.delivery_fee||0),grand_total_aed:Number(x.total_aed||0)+Number(x.delivery_fee||0),items:JSON.parse(x.items_json||"[]")}))});
 }
 async function updateOrder(request,env,orderNumber){
   if(!requireAdmin(request,env))return json(request,{error:"Unauthorized"},401);
-  const b=await request.json(),allowed=["received","paid","accepted","baking","ready","delivery","delivered","cancelled"],fields=[],values=[];
-  if(typeof b.paid==="boolean"){fields.push("paid=?");values.push(b.paid?1:0)}
+  const b=await request.json(),allowed=["received","confirmed","preparing","ready","delivery","delivered","cancelled"],fields=[],values=[];
   if(b.status){if(!allowed.includes(b.status))return json(request,{error:"Invalid status."},400);fields.push("status=?");values.push(b.status)}
   if(b.delivery_fee!==undefined){const fee=Math.max(0,Number(b.delivery_fee)||0);fields.push("delivery_fee=?");values.push(fee)}
   if(b.admin_note!==undefined){fields.push("admin_note=?");values.push(String(b.admin_note||"").slice(0,1000))}
-  if(b.payment_link!==undefined){fields.push("payment_link=?");values.push(String(b.payment_link||"").trim().slice(0,1000))}
   if(!fields.length)return json(request,{error:"Nothing to update."},400);
   values.push(orderNumber.toUpperCase());
   const r=await env.DB.prepare(`UPDATE orders SET ${fields.join(",")} WHERE order_number=?`).bind(...values).run();
